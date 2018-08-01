@@ -1,24 +1,51 @@
 const Discord = require("discord.js");
 const fs = require("fs")
 const axios = require("axios")
+const moment = require("moment")
 const client = new Discord.Client();
-let cs;
-
 const config = require("./config.json");
+
+let cs;
+let staffChannel;
+
+function makeEmbed (color, title, message = null, footer = null, user = null) {
+	const colors = {
+		red: "#F44336",
+		blue: "#3F51B5",
+		green: "#4CAF50",
+		yellow: "#FFEB3B",
+		orange: "#FF9800"
+	};
+	
+	if (!colors.hasOwnProperty(color)) return;	//	Do nothing if an invalid color is given
+
+	let embed = new Discord.RichEmbed();
+
+	embed.setColor(colors[color])
+		.setDescription(`**${title}**${message != null ? '\n' + message : ''}`);
+	if (user) embed.setAuthor(user.tag, user.displayAvatarURL);
+	if (footer) {
+		embed.setFooter(footer);
+	} else {
+		embed.setTimestamp();
+	}
+
+	staffChannel.send({ embed });
+};
+
 
 client.on("ready", () => {
   console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
-  client.user.setActivity(`type c?help`);
+  client.user.setActivity(`type /help`);
+  staffChannel = client.guilds.find('id', config.guildId).channels.find('id', config.channelId);
 });
 
 client.on("guildCreate", guild => {
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-  client.user.setActivity(`Serving ${client.guilds.size} servers`);
 });
 
 client.on("guildDelete", guild => {
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-  client.user.setActivity(`Serving ${client.guilds.size} servers`);
 });
 
 
@@ -30,7 +57,15 @@ client.on("message", async message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
+  if(command === "say") {
+    message.delete().catch(O_o=>{}).then; 
+    message.channel.send(args.join(" "));
+  }
+
   if(command === "8ball") {
+    if (args.length < 1)
+      message.reply("Please ask me a yes or no question.") 
+        return;
   var ask = [
       //Yes
       `It is certain.`,
@@ -120,7 +155,7 @@ client.on("message", async message => {
   }
 
   if(command === "purge") {
-    if (!message.member.roles.exists('name', 'ROLE NAME'))
+    if (!message.member.roles.exists('name', 'Administrator')) return;
     const deleteCount = parseInt(args[0], 10);
     
     if(!deleteCount || deleteCount < 2 || deleteCount > 100)
@@ -133,5 +168,27 @@ client.on("message", async message => {
   }
 });
 
+client.on('guildMemberAdd', member => {
+	makeEmbed('green', 'User joined', null, null, member.user);
+});
+
+client.on('guildMemberRemove', member => {
+	makeEmbed('orange', 'User left', null, null, member.user);
+});
+
+client.on('messageDelete', message => {
+	if (message.author.id === config.botId) return;	//	Don't do anything if these are true
+
+	makeEmbed('red', `Message sent by ${message.author.tag} deleted in #${message.channel.name}`, message.cleanContent, `ID: ${message.id}  •  ${moment().format('MMM Do YYYY, H:mm:ss')}`, message.author);
+});
+
 client.login(config.token);
-           
+
+process.on("uncaughtException", (err) => {
+	const errorMsg = err.stack.replace(new RegExp(`${__dirname}/`, "g"), "./");
+	console.trace("Uncaught Exception: ", errorMsg);
+});
+
+process.on("unhandledRejection", err => {
+	console.trace("Uncaught Promise Error: ", err);
+});
