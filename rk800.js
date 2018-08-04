@@ -6,7 +6,8 @@ const axios = require("axios");
 const moment = require("moment");
 const YouTube = require("simple-youtube-api")
 const ytdl = require("ytdl-core");
-
+const superagent = require("superagent");
+const talkedRecently = new Set();
 const config = require("./config.json");
 const google_api_key = String("AIzaSyC_mzsb_mwAyuVDeY8UWy5vzSabyBslTcM");
 
@@ -95,9 +96,138 @@ client.on("message", async message => {
   var rand = ask[Math.floor(Math.random() * ask.length)];
     return message.reply(rand);
   }
+  if(command === "roles") {
+    const embed = new Discord.RichEmbed()
+      .setTitle("DBH Community Server Roles List")
+      .setColor("#4682b4")
+      .setThumbnail("https://78.media.tumblr.com/bc063d4c01410c3e753a3e453990be30/tumblr_p9ucavqpVT1v66oaho1_400.png")
+      .addField("Thistle Purple \nPink \nMint \nBlue Violet \nSlate Grey \nDandelion \nGrey \nTurquoise \nOlive Drab \nLemon Chiffron \nGreen \nBlue \nViolet \nYellow \nOrange", "To apply a role to yourself: Type /addrole, and when I ask you which role you would like, type the role you desire. I should then respond to you that I have successfully applied the role.d If you wish to remove a role, type /removerole and enter the role you would like to remove, and I should respond saying I have removed your role. If there are any malfunctions that occur, please contact my superiors.")
+        message.channel.send({embed});
+  }
 
+  let member = message.member;
+  let Thistle = message.guild.roles.find("name", "Thistle Violet");
+  let Pink = message.guild.roles.find("name", "Pink");
+  let Mint = message.guild.roles.find("name", "Mint");
+  let BViolet = message.guild.roles.find("name", "Blue Violet");
+  let SGrey = message.guild.roles.find("name", "Slate Grey");
+  let Dandelion = message.guild.roles.find("name", "Dandelion");
+  let Grey = message.guild.roles.find("name", "Grey");
+  let Turquoise = message.guild.roles.find("name", "Turquoise");
+  let Olive = message.guild.roles.find("name", "Olive Drab");
+  let Lemon = message.guild.roles.find("name", "Lemon Chiffon");
+  let Green = message.guild.roles.find("name", "Green");
+  let Blue = message.guild.roles.find("name", "Blue");
+  let Violet = message.guild.roles.find("name", "Violet");
+  let Yellow = message.guild.roles.find("name", "Yellow");
+  let Orange = message.guild.roles.find("name", "Orange");
 
+  if (command === 'addrole'){
+    message.reply("What role would you like?");
+    const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 10000 });
+    console.log(collector)
+    collector.on('collect', message => {
+        if (message.content == "Thistle Violet") {
+            member.addRole(Thistle).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Pink") {
+            member.addRole(Pink).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Mint") {
+            member.addRole(Mint).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Blue Violet") {
+            member.addRole(BViolet).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Slate Grey") {
+            member.addRole(SGrey).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Dandelion") {
+            member.addRole(Dandelion).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Grey") {
+            member.addRole(Grey).catch(console.log)
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Turquoise") {
+            member.addRole(Turquoise).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Olive Drab") {
+            member.addRole(Olive).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Lemon Chiffon") {
+            member.addRole(Lemon).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Green") {
+            member.addRole(Green).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Blue") {
+            member.addRole(Blue).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Violet") {
+            member.addRole(Violet).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Orange") {
+            member.addRole(Orange).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        } else if (message.content == "Yellow") {
+            member.addRole(Yellow).catch(console.log);
+              return message.reply("I have successfully applied your desired role.")
+        }
+    })
+}
 
+  if(command === "removerole") {
+    message.reply("What role would you like to be removed?");
+    const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 10000 });
+    console.log(collector)
+    collector.on('collect', message => {
+        if (message.content == "Thistle Violet") {
+            member.removeRole(Thistle).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Pink") {
+            member.removeRole(Pink).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Mint") {
+            member.removeRole(Mint).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Blue Violet") {
+            member.removeRole(BViolet).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Slate Grey") {
+            member.removeRole(SGrey).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Dandelion") {
+            member.removeRole(Dandelion).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Grey") {
+            member.removeRole(Grey).catch(console.log)
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Turquoise") {
+            member.removeRole(Turquoise).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Olive Drab") {
+            member.removeRole(Olive).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Lemon Chiffon") {
+            member.removeRole(Lemon).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Green") {
+            member.removeRole(Green).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Blue") {
+            member.removeRole(Blue).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Violet") {
+            member.removeRole(Violet).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+        } else if (message.content == "Orange") {
+            member.removeRole(Orange).catch(console.log);
+        } else if (message.content == "Yellow") {
+            member.removeRole(Yellow).catch(console.log);
+              return message.reply("I have successfully removed your desired role.")
+      }
+  })
+}
   if(command === "talk") {
     const api_key = 'CC7yrbJDBivC_tyitHMl_dsEasA';
     const msg = args.join(" ");
@@ -111,185 +241,43 @@ client.on("message", async message => {
       cs = data.cs;
       return message.reply(data.output);
     }).catch(e => {
-      return console.error(e);	
+      return console.log(e);	
     });
   }
-  client.on('message', async msg => { // eslint-disable-line
-    if (msg.author.bot) return undefined;
-    if (!msg.content.startsWith(config.prefix)) return undefined;
   
-    const args = msg.content.split(' ');
-    const searchString = args.slice(1).join(' ');
-    const url = args[1] ? args[1].replace(/<(.+)>/g, '$1') : '';
-    const serverQueue = queue.get(msg.guild.id);
-  
-    let command = msg.content.toLowerCase().split(' ')[0];
-    command = command.slice(config.prefix.length)
-  
-    if (command === 'play') {
-      const voiceChannel = msg.member.voiceChannel;
-      if (!voiceChannel) return msg.channel.send('You need to be in a voice channel to queue music.');
-      const permissions = voiceChannel.permissionsFor(msg.client.user);
-      if (!permissions.has('CONNECT')) {
-        return msg.channel.send('I cannot connect to your voice channel, make sure I have the correct permissions.');
-      }
-      if (!permissions.has('SPEAK')) {
-        return msg.channel.send('I cannot speak in this voice channel, make sure I have the proper permissions.');
-      }
-  
-      if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
-        const playlist = await youtube.getPlaylist(url);
-        const videos = await playlist.getVideos();
-        for (const video of Object.values(videos)) {
-          const video2 = await youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
-          await handleVideo(video2, msg, voiceChannel, true); // eslint-disable-line no-await-in-loop
-        }
-        return msg.channel.send(`Playlist: **${playlist.title}** has been added to the queue.`);
-      } else {
-        try {
-          var video = await youtube.getVideo(url);
-        } catch (error) {
-          try {
-            var videos = await youtube.searchVideos(searchString, 10);
-            let index = 0;
-            msg.channel.send(`
-  __**Song selection:**__
-  ${videos.map(video2 => `**${++index} -** ${video2.title}`).join('\n')}
-  Please provide a value to select one of the search results ranging from 1-10.
-            `);
-            // eslint-disable-next-line max-depth
-            try {
-              var response = await msg.channel.awaitMessages(msg2 => msg2.content > 0 && msg2.content < 11, {
-                maxMatches: 1,
-                time: 10000,
-                errors: ['time']
-              });
-            } catch (err) {
-              console.error(err);
-              return msg.channel.send('An invalid value was entered. I will now cancel the video selection.');
-            }
-            const videoIndex = parseInt(response.first().content);
-            var video = await youtube.getVideoByID(videos[videoIndex - 1].id);
-          } catch (err) {
-            console.error(err);
-            return msg.channel.send('I could not obtain any search results.');
-          }
-        }
-        return handleVideo(video, msg, voiceChannel);
-      }
-    } else if (command === 'skip') {
-      if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel.');
-      if (!serverQueue) return msg.channel.send('There is nothing in the queue to skip.');
-      serverQueue.connection.dispatcher.end('Skipping song...');
-      return undefined;
-    } else if (command === 'stop') {
-      if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel.');
-      if (!serverQueue) return msg.channel.send('There is nothing in the queue to stop.');
-      serverQueue.songs = [];
-      serverQueue.connection.dispatcher.end('Stopping queue...');
-      return undefined;
-    } else if (command === 'volume') {
-      if (!msg.member.voiceChannel) return msg.channel.send('You are not in a voice channel!');
-      if (!serverQueue) return msg.channel.send('There is nothing currently playing.');
-      if (!args[1]) return msg.channel.send(`The current volume is: **${serverQueue.volume}**`);
-      serverQueue.volume = args[1];
-      serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 5);
-      return msg.channel.send(`I set the volume to: **${args[1]}**`);
-    } else if (command === 'np') {
-      if (!serverQueue) return msg.channel.send('There is nothing currently playing.');
-      return msg.channel.send(`🎶 Now playing: **${serverQueue.songs[0].title}**`);
-    } else if (command === 'queue') {
-      if (!serverQueue) return msg.channel.send('There is nothing in the queue.');
-      return msg.channel.send(`
-  __**Song queue:**__
-  ${serverQueue.songs.map(song => `**-** ${song.title}`).join('\n')}
-  **Now playing:** ${serverQueue.songs[0].title}
-      `);
-    } else if (command === 'pause') {
-      if (serverQueue && serverQueue.playing) {
-        serverQueue.playing = false;
-        serverQueue.connection.dispatcher.pause();
-        return msg.channel.send('The queue has been paused.');
-      }
-      return msg.channel.send('There is nothing currently playing.');
-    } else if (command === 'resume') {
-      if (serverQueue && !serverQueue.playing) {
-        serverQueue.playing = true;
-        serverQueue.connection.dispatcher.resume();
-        return msg.channel.send('The queue has been resumed.');
-      }
-      return msg.channel.send('There is nothing currently playing.');
-    }
-  
-    return undefined;
-  });
-  
-  async function handleVideo(video, msg, voiceChannel, playlist = false) {
-    const serverQueue = queue.get(msg.guild.id);
-    console.log(video);
-    const song = {
-      id: video.id,
-      title: Util.escapeMarkdown(video.title),
-      url: `https://www.youtube.com/watch?v=${video.id}`
-    };
-    if (!serverQueue) {
-      const queueConstruct = {
-        textChannel: msg.channel,
-        voiceChannel: voiceChannel,
-        connection: null,
-        songs: [],
-        volume: 5,
-        playing: true
-      };
-      queue.set(msg.guild.id, queueConstruct);
-  
-      queueConstruct.songs.push(song);
-  
-      try {
-        var connection = await voiceChannel.join();
-        queueConstruct.connection = connection;
-        play(msg.guild, queueConstruct.songs[0]);
-      } catch (error) {
-        console.error(`I could not join the voice channel because of: ${error}`);
-        queue.delete(msg.guild.id);
-        return msg.channel.send(`I could not join the voice channel because of: ${error}`);
-      }
-    } else {
-      serverQueue.songs.push(song);
-      console.log(serverQueue.songs);
-      if (playlist) return undefined;
-      else return msg.channel.send(`**${song.title}** has been added to the queue.`);
-    }
-    return undefined;
+  if(command === "dogs" || command === "ilikedogs"){
+    
+    const cooldown = new Set();
+    let {body} = await superagent
+      
+    
+      .get(`https://dog.ceo/api/breeds/image/random`);
+
+      let embed = new Discord.RichEmbed()
+      .setImage(body.message)
+      .setColor("#f4aa42")
+
+      message.channel.send(embed)
   }
-  
-  function play(guild, song) {
-    const serverQueue = queue.get(guild.id);
-  
-    if (!song) {
-      serverQueue.voiceChannel.leave();
-      queue.delete(guild.id);
-      return;
-    }
-    console.log(serverQueue.songs);
-  
-    const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
-      .on('end', reason => {
-        if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-        else console.log(reason);
-        serverQueue.songs.shift();
-        play(guild, serverQueue.songs[0]);
-      })
-      .on('error', error => console.error(error));
-    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
-  
-    serverQueue.textChannel.send(`I will now be playing: **${song.title}**.`);
-  }
-  
+
   if(command === "ping") {
     const m = await message.channel.send("Calculating latency...");
     m.edit(`Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
   }
+
+  if(command === `userinfo`) {
+    let embed = new Discord.RichEmbed()
+        .setThumbnail(message.author.avatarURL)
+        .setAuthor(message.author.username)
+        .setColor("#5DADE2")
+        .addField("Full Username", `${message.author.username}#${message.author.discriminator}`)
+        .addField("ID", message.author.id)
+        .addField("Created At", message.author.createdAt);
+
+    message.channel.sendEmbed(embed);
+
+    return;    
+}
   
   if(command === "kick") {
     if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
