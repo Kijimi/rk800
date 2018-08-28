@@ -86,7 +86,7 @@ client.on("message", async message => {
     var owoRand = owo[Math.floor(Math.random() * owo.length)];
       message.react(owoRand);
   }
-  
+
   if(command === "help") {
   const embed = new Discord.RichEmbed()    
         .setTitle("SylvBot's List of Commands")
@@ -149,20 +149,20 @@ client.on("message", async message => {
   });
 }
     if(command === "suggest" || command === "suggestion") {
-    let rreason = args.join(" ").slice(0);
-    if(!rreason) return message.reply("No suggestion was provided!");
+    let suggestion = args.join(" ").slice(0);
+    if(!suggestion) return message.reply("No suggestion was provided!");
 
-    let reportEmbed = new Discord.RichEmbed()
+    let suggestEmbed = new Discord.RichEmbed()
     .setDescription("Suggestion")
     .setColor("#bf7fbf")
     .addField("Suggestion By", `${message.author} with ID: ${message.author.id}`)
     .addField("Channel", message.channel)
     .addField("Time", message.createdAt)
-    .addField("Suggestion", rreason);
+    .addField("Suggestion", suggestion);
 
-    let reportschannel = message.guild.channels.find(`name`, "suggestions");
-    if(!reportschannel) return message.channel.send("Couldn't find the suggestions channel. Do I have permissions to view this channel?");
-    reportschannel.send(reportEmbed);
+    let suggestionchannel = message.guild.channels.find(`name`, "suggestions");
+    if(!suggestionchannel) return message.channel.send("Couldn't find the suggestions channel. Do I have permissions to view this channel?");
+    suggestionchannel.send(suggestEmbed);
 
 }
 
